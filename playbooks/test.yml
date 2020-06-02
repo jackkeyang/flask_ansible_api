@@ -1,0 +1,5 @@
+- name: a test playbook
+  hosts: all
+  gather_facts: no
+  tasks:
+  - ping:
