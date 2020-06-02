@@ -6,6 +6,10 @@
 ```
 gunicorn app:create_app\(\'dev\'\) -w 10 -b 0.0.0.0:5000
 ```
+或者
+```
+python run.py runserver -h 0.0.0.0
+```
 
 # run module
 ```
