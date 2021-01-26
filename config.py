@@ -3,6 +3,7 @@ class Config:
 
 class DevelopmentConfig():
     TOKEN = 'jopUIHp1239Oads'
+    REDIS_URL = "redis://:""@localhost:6379/1"
 
 class ProductionConfig():
     TOKEN = '0LAFvVAbcufUX1SVNSaRBCp2PgIqVVz4'
