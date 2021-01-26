@@ -9,6 +9,9 @@ from . import mod
 
 @mod.before_request
 def check_token():
+    '''
+    验证token， 如果同一IP认证失败5次，则封禁5分钟
+    '''
     client_ip = request.remote_addr
 
     deny_num = redis_store.get(client_ip)
