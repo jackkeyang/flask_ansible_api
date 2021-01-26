@@ -136,5 +136,5 @@ class Ansible_api():
 if __name__ == '__main__':
     ansible = MyAnsible(inventory=["192.168.0.107", "localhost", "192.168.0.101"], remote_user="root", become=True, become_method="sudo", become_user="root")
     ansible.run()
-    # ansible.playbook(["/Users/yangke/Development/flask_ansible_api/playbooks/test.yml"])
+    # ansible.playbook(["/Users/jack/Development/flask_ansible_api/playbooks/test.yml"])
     print(ansible.get_result())
