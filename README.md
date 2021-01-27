@@ -13,15 +13,16 @@ python run.py runserver -h 0.0.0.0
 ```
 import requests
 
+headers = {"token": "jopUIHp1239Oads"}
+
 data = {
         "tag": "module",
         "hosts": "192.168.0.100, 192.168.0.101",
         "module": "ping",
         "args": "",
-        "token": "jopUIHp1239Oads"
         }
 
-resp = requests.get('http://localhost:5000/api/ansible', json=data)
+resp = requests.get('http://localhost:5000/api/ansible', json=data, headers=headers)
 print resp.content
 ```
 
@@ -29,13 +30,28 @@ print resp.content
 ```
 import requests
 
+headers = {"token": "jopUIHp1239Oads"}
+
 data = {
         "tag": "playbook",
         "hosts": "192.168.0.100, 192.168.0.101",
         "ymls": ["playbooks/test.yml"],
-        "token": "jopUIHp1239Oads"
         }
         
-resp = requests.get('http://localhost:5000/api/ansible', json=data)
+resp = requests.get('http://localhost:5000/api/ansible', json=data, headers=headers)
 print resp.content
+```
+
+以上运行返回一个result_id: 7fa58734-2e8b-4b94-8b82-b460ec875dda
+
+# 通过result_id 获取返回信息
+```
+import requests
+import json
+
+headers = {"token": "jopUIHp1239Oads"}
+
+resp = requests.get('http://localhost:5000/api/ansible/7fa58734-2e8b-4b94-8b82-b460ec875dda', headers=headers)
+data = json.loads(resp.content)
+
 ```

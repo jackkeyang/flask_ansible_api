@@ -101,6 +101,8 @@ class Ansible_api():
                     stdout_callback = self.results_callback
                 )
                 result = tqm.run(play)
+            except Exception as e:
+                print(e)
             finally:
                 if tqm is not None:
                     tqm.cleanup()
@@ -131,10 +133,11 @@ class Ansible_api():
         for host,result in self.results_callback.host_unreachable.items():
             result_raw['unreachable'][host] = result
         # return json.dumps(result_raw, indent=4)
+        # print(json.dumps(result_raw, indent=4))
         return json.dumps(result_raw)
 
 if __name__ == '__main__':
-    ansible = MyAnsible(inventory=["192.168.0.107", "localhost", "192.168.0.101"], remote_user="root", become=True, become_method="sudo", become_user="root")
+    ansible = Ansible_api(inventory=["192.168.0.109", "localhost", "192.168.0.101"], remote_user="root")
     ansible.run()
     # ansible.playbook(["/Users/jack/Development/flask_ansible_api/playbooks/test.yml"])
     print(ansible.get_result())

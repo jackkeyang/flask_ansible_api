@@ -1,9 +1,10 @@
 # from . import api
 from flask import request, current_app, abort, jsonify
 from flask.views import MethodView
-from app.utils.errors import bad_request, forbidden, unauthorized
-from app.utils.ansible_api import Ansible_api
-from app import redis_store
+from utils.errors import bad_request, forbidden, unauthorized
+from utils.ansible_api import Ansible_api
+from app import redis_store, celery
+from celery_task.task import ansibleHocTask
 from . import mod
 # mod = Blueprint('api', __name__)
 
@@ -35,15 +36,20 @@ class AnsibleView(MethodView):
     def get(self):
         tag = request.get_json().get('tag')
         hosts = request.get_json().get('hosts')
-        ansible_api = Ansible_api(inventory=hosts,remote_user="root")
+        module = request.get_json().get('module')
+        args = request.get_json().get('args', None)
         if tag == "module":
-            module = request.get_json().get('module')
-            args = request.get_json().get('args', None)
-            ansible_api.run(module=module, args=args, hosts="all")
+            result = ansibleHocTask.delay(hosts, "root", module, args)
         elif tag == "playbook":
             ymls = request.get_json().get('ymls')
             ansible_api.playbook(ymls)
-        return jsonify(ansible_api.get_result())
+        return jsonify({'code': 200, 'result_id': result.id})
 
-mod.add_url_rule('ansible', view_func=AnsibleView.as_view('ansibleview'))
+class AnsibleResultView(MethodView):
+    def get(self, result_id):
+        result = celery.AsyncResult(id=result_id)
+        return jsonify({'code': 200, 'result': str(result.get())})
+
+mod.add_url_rule('/ansible', view_func=AnsibleView.as_view('ansibleview'))
+mod.add_url_rule('/ansible/<string:result_id>', view_func=AnsibleResultView.as_view('ansibleresultview'))
 
