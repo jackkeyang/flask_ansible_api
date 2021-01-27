@@ -22,7 +22,7 @@ headers = {"token": "jopUIHp1239Oads"}
 
 data = {
         "tag": "module",
-        "hosts": "192.168.0.100, 192.168.0.101",
+        "hosts": ["192.168.0.100, 192.168.0.101"],
         "module": "ping",
         "args": "",
         }
@@ -39,7 +39,7 @@ headers = {"token": "jopUIHp1239Oads"}
 
 data = {
         "tag": "playbook",
-        "hosts": "192.168.0.100, 192.168.0.101",
+        "hosts": ["192.168.0.100, 192.168.0.101"],
         "ymls": ["playbooks/test.yml"],
         }
         
