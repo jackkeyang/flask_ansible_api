@@ -9,6 +9,11 @@ gunicorn app:create_app\(\'dev\'\) -w 10 -b 0.0.0.0:5000
 python run.py runserver -h 0.0.0.0
 ```
 
+# 运行celery
+`celery -A app.celery worker --loglevel=info`
+> flask 中使用celery 返回结果为空，需要在运行celery的终端中定一个环境变量：export PYTHONOPTIMIZE=1
+
+
 # run module
 ```
 import requests
